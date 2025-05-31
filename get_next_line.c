@@ -73,7 +73,7 @@ char	*fill_line(int fd, char *line)
 
 // }
 
-/*int	main(void)
+int	main(void)
 {
 int	fd;
 char	*line;
@@ -90,15 +90,15 @@ printf("%s", line);
 // }
 close(fd);
 return (0);
-}*/
+}
 
-int	main(void)
+/*int	main(void)
 {
 char	*str1 = "Ser";
 char	*str2 = "gey";
 char	*result;
 
 result = ft_strjoin(str1, str2);
-printf("%s", result);
+printf("%s\n", result);
 return (0);
-}
+}*/

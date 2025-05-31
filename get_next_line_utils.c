@@ -117,19 +117,18 @@ char	*ft_strjoin(char *line, char *buf)
 	if (!str)
 		return (NULL);
 	i = 0;
-	while (line[i] != '\0' && i < (ft_strlen(line, '\0') - 1))
+	while (line[i] != '\0')
 	{
 		str[i] = line[i];
 		i++;
 	}
-	str[i] = '\0';
 	i = 0;
-	while ((ft_strlen(str,'\0') + i) < (ft_strlen(buf,'\0') - 1) && buf[i] != '\0')
+	while (buf[i] != '\0')
 	{
-		str[ft_strlen(str,'\0') + i] = buf[i];
+		str[ft_strlen(line,'\0') + i] = buf[i];
 		i++;
 	}
-	str[i] = '\0';
+	str[ft_strlen(line,'\0') + i] = '\0';
 	return (str);
 }
 
