@@ -117,11 +117,12 @@ char	*ft_strjoin(char *line, char *buf)
 	if (!str)
 		return (NULL);
 	i = 0;
-	while (line[i] != '\0')
-	{
-		str[i] = line[i];
-		i++;
-	}
+	if (line == NULL)
+		while (buf[i] != '\0')
+		{
+			str[i] = buf[i];
+			i++;
+		}
 	i = 0;
 	while (buf[i] != '\0')
 	{
