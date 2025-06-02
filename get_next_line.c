@@ -36,25 +36,19 @@ char	*fill_line(int fd, char *line)
 {
 	int	ch_read;
 	char	*buf;
-	int	i;
 
 	buf = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buf)
 		return (NULL);
-	buf[BUFFER_SIZE + 1] = '\0';
+	//buf[BUFFER_SIZE + 1] = '\0';
 	
-	i = 0;
-	while(read(fd, buf, BUFFER_SIZE) > 0)
+	while((ch_read = read(fd, buf, BUFFER_SIZE)) > 0)
 	{
-		ch_read = read(fd, buf, BUFFER_SIZE);
-		/*if (ch_read < 0)
-		{
-			free(buf);
-			return (NULL);
-		}*/
+		//ch_read = read(fd, buf, BUFFER_SIZE);
+		buf[ch_read] = '\0';
 		line = ft_strjoin(line, buf);
-		i++;
 	}
+	free(buf);
 	return (line);
 }
 
@@ -76,7 +70,7 @@ char	*fill_line(int fd, char *line)
 int	main(void)
 {
 int	fd;
-char	*line;
+static char	*line;
 
 line = NULL;
 

@@ -112,17 +112,19 @@ char	*ft_strjoin(char *line, char *buf)
 	char	*str;
 	int	i;
 
-	//len_linebuf = ft_strlen(line,'\0') + ft_strlen(buf,'\0');
-	str = malloc(BUFFER_SIZE * sizeof(char));
-	if (!str)
-		return (NULL);
 	i = 0;
 	if (line == NULL)
+	{
+		len_linebuf = ft_strlen(line,'\0') + ft_strlen(buf,'\0');
+		str = malloc((len_linebuf * sizeof(char)) + 1);
+		if (!str)
+			return (NULL);
 		while (buf[i] != '\0')
-		{
-			str[i] = buf[i];
-			i++;
-		}
+			{
+				str[i] = buf[i];
+				i++;
+			}
+	}
 	else
 		while (buf[i] != '\0')
 		{
