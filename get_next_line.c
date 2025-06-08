@@ -6,7 +6,7 @@
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 11:35:52 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/05/30 19:39:09 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/06/06 17:04:36 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,36 +15,27 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-char	*ft_strchr(const char *s, int c)
+char *get__line(int fd, char *line)
 {
-	int	i;
+	int ch_read;
+	char *buf;
 
-	i = 0;
-	while (s[i] != '\0')
-	{
-		if (s[i] == (char)c)
-			return ((char *)&s[i]);
-		i++;
-	}
-	if ((char)c == '\0')
-		return ((char *)&s[i]);
-	else
-		return (NULL);
-}
-
-char	*fill_line(int fd, char *line)
-{
-	int	ch_read;
-	char	*buf;
-
+	if (!line)
+		line = ft_strdup("");
 	buf = malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (!buf)
+	if (!buf || !line)
 		return (NULL);
-	//buf[BUFFER_SIZE + 1] = '\0';
-	
-	while((ch_read = read(fd, buf, BUFFER_SIZE)) > 0)
+	ch_read = 1;
+	while (ch_read > 0 && ft_strchr(line, '\n') == NULL)
 	{
-		//ch_read = read(fd, buf, BUFFER_SIZE);
+		ch_read = read(fd, buf, BUFFER_SIZE);
+		if (ch_read < 0)
+		{
+			free(buf);
+			free(line);
+			line = NULL;
+			return (NULL);
+		}
 		buf[ch_read] = '\0';
 		line = ft_strjoin(line, buf);
 	}
@@ -52,47 +43,137 @@ char	*fill_line(int fd, char *line)
 	return (line);
 }
 
-// char	*get_next_line(int fd)
+// char *cut__line(char *line)
 // {
-// 	static char	*list;
-// 	char	*new_line;
-// 	int	i;
+// 	// int	len;
+// 	// int	len2;
+// 	int i;
+// 	char *aux;
+// 	char *rest;
 
 // 	i = 0;
-// 	list = NULL;
-// 	if (fd < 0 || BUFFER_SIZE <= 0)
+// 	// len = ft_strlen(line, '\n');
+// 	while (line[i] != '\n' && line[i])
+// 		i++;
+// 	aux = ft_substr(line, 0, i + 1);
+// 	if (!aux)
+// 	{
+// 		free(aux);
+// 		return (0);
+// 	}
+// 	// len2 = ft_strlen(line + (len + 1), '\0');
+// 	rest = ft_substr(line, i + 1, ft_strlen(line + i, '\0'));
+// 	if (!line)
+// 	{
+// 		free(aux);
 // 		return (NULL);
-// 	while ( )
-// 		new_line = fill_line(fd, list);
-
-// }
-
-int	main(void)
-{
-int	fd;
-static char	*line;
-
-line = NULL;
-
-fd = open("file.txt", O_RDONLY);
-line = fill_line(fd, line);
-printf("%s", line);
-// while ((line = get_next_line(fd)))
-// {
-// 	printf("buf -> %s\n", line);
+// 	}
 // 	free(line);
+// 	line = rest;
+// 	free(rest);
+// 	return (aux);
 // }
-close(fd);
-return (0);
+
+char *cut__line(char **line)
+{
+	int i;
+	char *aux;
+	char *rest;
+
+	if (!*line)
+	{
+		free(*line);
+		return (NULL);
+	}
+	i = 0;
+	while ((*line)[i] && (*line)[i] != '\n')
+		i++;
+	if ((*line)[i] == '\n')
+		i++;
+	aux = ft_substr(*line, 0, i);
+	if (!aux)
+	{
+		free(*line);
+		return (NULL);
+	}
+	rest = ft_substr(*line, i, ft_strlen(*line + i, '\0'));
+	if (!rest)
+	{
+		free(aux);
+		return (NULL);
+	}
+	free(*line);
+	*line = rest;
+	// free(rest);
+	return (aux);
 }
 
-/*int	main(void)
+char *get_next_line(int fd)
 {
-char	*str1 = "Ser";
-char	*str2 = "gey";
-char	*result;
+	static char *line;
+	char *new_line;
 
-result = ft_strjoin(str1, str2);
-printf("%s\n", result);
-return (0);
-}*/
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	new_line = NULL;
+	line = get__line(fd, line);
+	if (!line || line[0] == '\0')
+	{
+		free(line);
+		line = NULL;
+		return (NULL);
+	}
+	new_line = cut__line(&line);
+	if (!new_line)
+	{
+		free(line);
+		line = NULL;
+		return (NULL);
+	}
+	return (new_line);
+}
+
+int main(void)
+{
+	int fd;
+	static char *line;
+
+	line = NULL;
+	fd = open("file.txt", O_RDONLY);
+	if (!line)
+		line = get_next_line(fd);
+	while (line != NULL)
+	{
+		line = get_next_line(fd);
+		printf("%s", line);
+	}
+	free(line);
+	// line = get_next_line(fd);
+	// // printf("%s", line);
+	// free(line);
+	// line = get_next_line(fd);
+	// // printf("%s", line);
+	// free(line);
+	// line = get_next_line(fd);
+	// // printf("%s", line);
+	// free(line);
+	// line = get_next_line(fd);
+	// // printf("%s", line);
+	// free(line);
+	// line = get_next_line(fd);
+	// free(line);
+	// line = get_next_line(fd);
+	// free(line);
+	// line = get_next_line(fd);
+	// free(line);
+	// line = get_next_line(fd);
+	// free(line);
+	// line = get_next_line(fd);
+	// free(line);
+	// line = get_next_line(fd);
+	// free(line);
+	// line = get_next_line(fd);
+// 	// free(line);
+	close(fd);
+	return (0);
+}
