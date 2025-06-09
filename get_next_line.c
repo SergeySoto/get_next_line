@@ -6,7 +6,7 @@
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 11:35:52 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/06/09 20:31:02 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/06/09 20:40:04 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,22 +111,3 @@ char	*get_next_line(int fd)
 	line = update_static(line);
 	return (new_line);
 }
-
-// int main(void)
-// {
-// 	int fd;
-// 	char *line = NULL;
-
-// 	fd = open("file.txt", O_RDONLY);
-// 	//line = get_next_line(fd);
-// 	//printf("%s", line);
-// 	//free(line);
-// 	while ((line = get_next_line(fd))!= NULL)
-// 	{
-// 		printf("%s", line);
-// 		free(line);
-// 	}
-// 	free(line);
-// 	close(fd);
-// 	return (0);
-// }
