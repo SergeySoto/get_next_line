@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 11:35:52 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/06/09 19:48:47 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/06/09 20:04:51 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -86,47 +86,28 @@ char	*update_static(char *line)
 
 char	*get_next_line(int fd)
 {
-	static char	*line;
+	static char	*line[MAX_FD];
 	char		*new_line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 	{
-		free(line);
+		free(line[fd]);
 		return (NULL);
 	}
-	line = get__line(fd, line);
-	if (!line || line[0] == '\0')
+	line[fd] = get__line(fd, line[fd]);
+	if (!line[fd] || line[fd][0] == '\0')
 	{
-		free(line);
-		line = NULL;
+		free(line[fd]);
+		line[fd] = NULL;
 		return (NULL);
 	}
-	new_line = cut__line(line);
+	new_line = cut__line(line[fd]);
 	if (!new_line)
 	{
-		free(line);
-		line = NULL;
+		free(line[fd]);
+		line[fd] = NULL;
 		return (NULL);
 	}
-	line = update_static(line);
+	line[fd] = update_static(line[fd]);
 	return (new_line);
 }
-
-// int main(void)
-// {
-// 	int fd;
-// 	char *line = NULL;
-
-// 	fd = open("file.txt", O_RDONLY);
-// 	//line = get_next_line(fd);
-// 	//printf("%s", line);
-// 	//free(line);
-// 	while ((line = get_next_line(fd))!= NULL)
-// 	{
-// 		printf("%s", line);
-// 		free(line);
-// 	}
-// 	free(line);
-// 	close(fd);
-// 	return (0);
-// }
