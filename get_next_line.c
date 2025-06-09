@@ -45,25 +45,21 @@ char *get__line(int fd, char *line)
 
 // char *cut__line(char *line)
 // {
-// 	// int	len;
-// 	// int	len2;
 // 	int i;
 // 	char *aux;
 // 	char *rest;
 
 // 	i = 0;
-// 	// len = ft_strlen(line, '\n');
 // 	while (line[i] != '\n' && line[i])
 // 		i++;
-// 	aux = ft_substr(line, 0, i + 1);
+// 	aux = ft_substr(line, 0, i + (line[i] == '\n' ? 1 : 0));
 // 	if (!aux)
 // 	{
-// 		free(aux);
-// 		return (0);
+// 		free(line);
+// 		return (NULL);
 // 	}
-// 	// len2 = ft_strlen(line + (len + 1), '\0');
-// 	rest = ft_substr(line, i + 1, ft_strlen(line + i, '\0'));
-// 	if (!line)
+// 	rest = ft_substr(line, i + (line[i] == '\n' ? 1 : 0), ft_strlen(line + i + (line[i] == '\n' ? 1 : 0), '\0'));
+// 	if (!rest)
 // 	{
 // 		free(aux);
 // 		return (NULL);
@@ -140,40 +136,21 @@ int main(void)
 
 	line = NULL;
 	fd = open("file.txt", O_RDONLY);
-	if (!line)
+	/*if (!line)
 		line = get_next_line(fd);
 	while (line != NULL)
 	{
 		line = get_next_line(fd);
 		printf("%s", line);
+	}*/
+	line = get_next_line(fd);
+	while (line != NULL)
+	{
+		printf("%s", line);
+		free(line);
+		line = get_next_line(fd);
 	}
 	free(line);
-	// line = get_next_line(fd);
-	// // printf("%s", line);
-	// free(line);
-	// line = get_next_line(fd);
-	// // printf("%s", line);
-	// free(line);
-	// line = get_next_line(fd);
-	// // printf("%s", line);
-	// free(line);
-	// line = get_next_line(fd);
-	// // printf("%s", line);
-	// free(line);
-	// line = get_next_line(fd);
-	// free(line);
-	// line = get_next_line(fd);
-	// free(line);
-	// line = get_next_line(fd);
-	// free(line);
-	// line = get_next_line(fd);
-	// free(line);
-	// line = get_next_line(fd);
-	// free(line);
-	// line = get_next_line(fd);
-	// free(line);
-	// line = get_next_line(fd);
-// 	// free(line);
 	close(fd);
 	return (0);
 }
