@@ -6,14 +6,11 @@
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 11:35:52 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/06/09 20:04:51 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/06/09 20:17:54 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
-#include <stdio.h>
-#include <unistd.h>
-#include <fcntl.h>
 
 char	*get__line(int fd, char *line)
 {
